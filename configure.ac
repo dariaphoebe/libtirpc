@@ -48,9 +48,22 @@ if test "x$enable_gssapi" = xyes; then
 		AC_MSG_ERROR([krb5-config tool not found. Use --disable-gssapi, or install Kerberos.])
 	fi
 	GSSAPI_CFLAGS=`${KRB5_CONFIG} --cflags gssapi`
+	GSSAPI_LDFLAGS=`${KRB5_CONFIG} --ldflags gssapi`
 	GSSAPI_LIBS=`${KRB5_CONFIG} --libs gssapi`
 	AC_SUBST([GSSAPI_CFLAGS])
+	AC_SUBST([GSSAPI_LDFLAGS])
 	AC_SUBST([GSSAPI_LIBS])
+
+	gssapi_save_CPPFLAGS="$CPPFLAGS"
+	gssapi_save_LDFLAGS="$LDFLAGS"
+	gssapi_save_LIBS="$LIBS"
+	CPPFLAGS="$GSSAPI_CPPFLAGS $CPPFLAGS"
+	LDFLAGS="$GSSAPI_LDFLAGS $LDFLAGS"
+	LIBS="$GSSAPI_LIBS $LIBS"
+	AC_CHECK_FUNCS([gss_pname_to_uid])
+	CPPFLAGS="$gssapi_save_CPPFLAGS"
+	LDFLAGS="$gssapi_save_LDFLAGS"
+	LIBS="$gssapi_save_LIBS"
 fi
 
 AC_ARG_ENABLE(authdes,
