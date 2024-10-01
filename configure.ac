@@ -128,6 +128,22 @@ AC_TRY_COMPILE([#include <netinet/in.h>], [
 ], [
 	AC_MSG_RESULT(no)
 ])
+AC_MSG_CHECKING([for IPV6_PKTINFO])
+AC_TRY_COMPILE([#include <netdb.h>], [
+  int opt = IPV6_PKTINFO;
+], [
+  AC_MSG_RESULT([yes])
+], [
+AC_TRY_COMPILE([#define __APPLE_USE_RFC_3542
+			#include <netdb.h>], [
+  int opt = IPV6_PKTINFO;
+], [
+  AC_MSG_RESULT([yes with __APPLE_USE_RFC_3542])
+  AC_DEFINE([__APPLE_USE_RFC_3542], [1], [show IPV6_PKTINFO internals on macos])
+], [
+  AC_MSG_RESULT([no])
+])
+])
 
 AC_CONFIG_HEADERS([config.h])
 AC_PROG_LIBTOOL
