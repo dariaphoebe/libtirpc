@@ -84,7 +84,18 @@ fi
 
 AC_ARG_ENABLE(symvers,
 	[AC_HELP_STRING([--disable-symvers], [Disable symbol versioning @<:@default=no@:>@])],
-      [],[enable_symvers=yes])
+      [],[enable_symvers=maybe])
+
+if test "x$enable_symvers" = xmaybe; then
+   check_vscript_save_flags="$LDFLAGS"
+   echo "V1 { global: show; local: *; };" > conftest.map
+   AS_IF([test x = xyes], [echo "{" >> conftest.map])
+   LDFLAGS="$LDFLAGS -Wl,--version-script,conftest.map"
+   AC_LINK_IFELSE([[int show, hide;]], [enable_symvers=yes], [])
+   LDFLAGS="$check_vscript_save_flags"
+   rm -f conftest.map
+fi
+
 AM_CONDITIONAL(SYMVERS, test "x$enable_symvers" = xyes)
 
 AC_CANONICAL_BUILD
