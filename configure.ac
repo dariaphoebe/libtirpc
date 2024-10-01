@@ -89,6 +89,46 @@ case $build_os in
 esac
 
 
+AC_MSG_CHECKING(for SOL_IP)
+AC_TRY_COMPILE([#include <netdb.h>], [
+	int ipproto = SOL_IP;
+], [
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(HAVE_SOL_IP, 1, [Have SOL_IP])
+], [
+	AC_MSG_RESULT(no)
+])
+
+AC_MSG_CHECKING(for SOL_IPV6)
+AC_TRY_COMPILE([#include <netdb.h>], [
+	int ipproto = SOL_IPV6;
+], [
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(HAVE_SOL_IPV6, 1, [Have SOL_IPV6])
+], [
+	AC_MSG_RESULT(no)
+])
+
+AC_MSG_CHECKING(for IPPROTO_IP)
+AC_TRY_COMPILE([#include <netinet/in.h>], [
+	int ipproto = IPPROTO_IP;
+], [
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(HAVE_IPPROTO_IP, 1, [Have IPPROTO_IP])
+], [
+	AC_MSG_RESULT(no)
+])
+
+AC_MSG_CHECKING(for IPPROTO_IPV6)
+AC_TRY_COMPILE([#include <netinet/in.h>], [
+	int ipproto = IPPROTO_IPV6;
+], [
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(HAVE_IPPROTO_IPV6, 1, [Have IPPROTO_IPV6])
+], [
+	AC_MSG_RESULT(no)
+])
+
 AC_CONFIG_HEADERS([config.h])
 AC_PROG_LIBTOOL
 AC_HEADER_DIRENT
